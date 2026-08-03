@@ -24,7 +24,44 @@ Our mission is to empower students and job seekers with AI-driven career guidanc
 - Job Matching
 
 ---
+# 🛠 Suggested Tech Stack
 
+## Frontend
+
+- React.js
+- Next.js
+- Tailwind CSS
+
+## Backend
+
+- Node.js
+- Express.js
+
+## Database
+
+- MongoDB
+- Mongoose ODM
+
+## AI Services
+
+- OpenAI API
+- Resume Parser
+- Embedding Models
+- Vector Database (Pinecone / Weaviate / ChromaDB)
+
+## Authentication
+
+- JWT (JSON Web Token)
+- OAuth (Google, LinkedIn)
+
+## Version Control & Deployment
+
+- Git
+- GitHub
+- GitHub Actions
+- Vercel (Frontend Deployment)
+- Render / Railway (Backend Deployment)
+- MongoDB Atlas (Cloud Database)
 # 📌 Problem Statement
 
 Current career platforms focus on only one aspect of the hiring process—either learning, resume building, or job searching.
