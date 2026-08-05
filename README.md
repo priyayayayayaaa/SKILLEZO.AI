@@ -36,11 +36,12 @@ Our mission is to empower students and job seekers with AI-driven career guidanc
 
 - Node.js
 - Express.js
+- TypeScript
+- MongoDB Atlas & Mongoose ODM
+- Zod (Schema & Environment Validation)
+- JWT & bcryptjs Authentication Architecture
 
-## Database
-
-- MongoDB
-- Mongoose ODM
+*(For detailed backend architecture and phase progress, see [server/README.md](file:///x:/projects/next.js/SKILLEZO.AI/server/README.md))*
 
 ## AI Services
 
