@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -64,12 +64,13 @@ export function Navbar({ onGetScore }: NavbarProps) {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
-          <button
-            data-testid="login-btn"
-            className="text-sm text-white/80 hover:text-white transition-colors px-3 cursor-pointer"
-          >
-            Login
-          </button>
+        <Link
+  href="/login"
+  data-testid="login-btn"
+  className="text-sm text-white/80 hover:text-white transition-colors px-3 cursor-pointer"
+>
+  Login
+</Link>
           <Button
             onClick={onGetScore}
             data-testid="nav-cta-btn"
