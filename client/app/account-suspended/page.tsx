@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ShieldAlert, HelpCircle, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
-import AuthLayout from "@/components/AuthLayout";
+import AuthLayout from "@/components/auth/AuthLayout";
 import AuthCard from "@/components/auth/AuthCard";
 import AuthHeader from "@/components/auth/AuthHeader";
 

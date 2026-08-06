@@ -8,7 +8,7 @@ interface RevealProps {
   delay?: number;
   y?: number;
   className?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export function Reveal({ children, delay = 0, y = 28, className = "", ...props }: RevealProps) {
