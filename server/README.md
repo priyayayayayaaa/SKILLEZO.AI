@@ -28,15 +28,35 @@ MongoDB Atlas
 
 ## 📌 Implementation Status
 
-Current implementation progress: **Phases 1 through 3 Completed**
+Current implementation progress: **Phases 1 through 7 Completed (Complete 10/10 Persistence Model Layer)**
 
 - [x] **PHASE 1 — Backend Foundation**: Environment configuration (Zod validation), structure setup, TypeScript setup, base dependencies (`express`, `mongoose`, `zod`, `jsonwebtoken`, `bcryptjs`).
 - [x] **PHASE 2 — MongoDB Connection + Core Infrastructure**: Mongoose connection manager with state management, graceful shutdown listeners (`SIGINT`/`SIGTERM`), CORS origin handling, liveness (`GET /api/health`), and database readiness (`GET /api/health/ready`) endpoints.
 - [x] **PHASE 3 — Shared Backend Infrastructure**: Domain enums, machine-readable error codes (`ERROR_CODES`), numeric HTTP status (`HTTP_STATUS`), custom operational `AppError`, generic `apiResponse` contracts, `asyncHandler`, Zod `validate` request middleware, `objectIdSchema`, `paginationQuerySchema`, `notFoundMiddleware`, and central `errorMiddleware`.
-- [ ] **PHASE 4 — Core Mongoose Models**: User, Role, Company.
-- [ ] **PHASE 5 — Dependent Mongoose Models**: Profile, Resume, Competency, CareerPlan, CompanyMember, Job, Application.
-- [ ] **PHASE 6 — Repository Infrastructure**
-- [ ] **PHASE 7 — Authentication Module**
+- [x] **PHASE 4 — Root Mongoose Models**: `User`, `Role`, `Company` models with indexes, defaults, and schema validations.
+- [x] **PHASE 5 — Dependent Mongoose Models**: `Profile` (embedded `skills`, `education`, `experience`, `links`), `Competency` (compound unique `{ roleId, skillName }`), `CompanyMember` (N:M bridge between `User` and `Company`).
+- [x] **PHASE 6 — Resume & Job Mongoose Models**: `Resume` (typed `extractedData`), `Job` (multi-references, embedded `location`, `salary`, `requiredSkills`).
+- [x] **PHASE 7 — Final Mongoose Models**: `CareerPlan` (typed `gapsData`), `Application` (N:M bridge between `User` and `Job` with `{ userId, jobId }` compound unique constraint). **Total: 10 / 10 Models Complete**.
+- [ ] **PHASE 8 — Database Model Audit & Freeze**
+- [ ] **PHASE 9 — Repository Layer**
+- [ ] **PHASE 10 — Service Layer & Business Logic**
+
+---
+
+## 📦 Persistence Layer Overview (10 / 10 Mongoose Models)
+
+| # | Model | Collection | Primary / Compound Unique Indexes | Key References / Embedded Features |
+|---|---|---|---|---|
+| 01 | **User** | `users` | `{ email: 1 }` (Unique) | `passwordHash` (`select: false`), normalized `email` |
+| 02 | **Role** | `roles` | `{ slug: 1 }` (Unique) | Normalized `slug`, role status |
+| 03 | **Company** | `companies` | `{ slug: 1 }` (Unique) | `location` subdocument, `createdBy` -> `User` |
+| 04 | **Profile** | `profiles` | `{ userId: 1 }` (Unique) | Embedded `skills`, `education`, `experience`, `links` |
+| 05 | **Competency** | `competencies` | `{ roleId: 1, skillName: 1 }` (Unique) | `roleId` -> `Role`, `CompetencyImportance` enum |
+| 06 | **CompanyMember** | `company_members` | `{ userId: 1, companyId: 1 }` (Unique) | Bridge between `User` & `Company`, `invitedBy` -> `User` |
+| 07 | **Resume** | `resumes` | `{ userId: 1, createdAt: -1 }` | `userId` -> `User`, typed `extractedData` |
+| 08 | **Job** | `jobs` | `{ companyId: 1, status: 1 }`, `{ roleId: 1, status: 1 }` | `companyId` -> `Company`, `roleId` -> `Role`, `createdBy` -> `User` |
+| 09 | **CareerPlan** | `career_plans` | `{ userId: 1, roleId: 1, createdAt: -1 }` | `userId` -> `User`, `roleId` -> `Role`, typed `gapsData` |
+| 10 | **Application** | `applications` | `{ userId: 1, jobId: 1 }` (Unique) | Bridge between `User` & `Job`, `resumeId` -> `Resume`, `statusHistory` |
 
 ---
 
@@ -49,10 +69,14 @@ server/
 ├── package.json                      # Build & runner scripts
 ├── tsconfig.json                     # TypeScript compiler configuration (@/* paths)
 │
-├── doc/                              # Architectural phase documentation
-│   ├── phase1.md
-│   ├── phase2.md
-│   └── phase3.md
+├── doc/                              # Architectural phase documentation & walkthroughs
+│   ├── planes/
+│   │   ├── phase1.md ... phase7.md
+│   └── walkthrough/
+│       ├── phase4walkthrough.md
+│       ├── phase5walkthrough.md
+│       ├── phase6walkthrough.md
+│       └── phase7walkthrough.md
 │
 └── src/
     ├── config/
@@ -71,6 +95,19 @@ server/
     │   ├── error.middleware.ts       # Centralized Express error handler
     │   ├── notFound.middleware.ts    # Catch-all 404 route handler
     │   └── validate.middleware.ts   # Express Zod request validation pipeline
+    │
+    ├── models/                       # 10 / 10 Mongoose Persistence Models
+    │   ├── User.model.ts
+    │   ├── Role.model.ts
+    │   ├── Company.model.ts
+    │   ├── Profile.model.ts
+    │   ├── Competency.model.ts
+    │   ├── CompanyMember.model.ts
+    │   ├── Resume.model.ts
+    │   ├── Job.model.ts
+    │   ├── CareerPlan.model.ts
+    │   ├── Application.model.ts
+    │   └── index.ts                  # Barrel re-export for all 10 models
     │
     ├── routes/
     │   └── health.routes.ts          # /api/health (Liveness) & /api/health/ready (Readiness)
@@ -125,13 +162,13 @@ npm run dev
 ### 4. Build & Type Check
 
 ```bash
-# Type checking
+# Type checking (0 errors)
 npm run type-check
 
-# Production build
+# Production build compilation
 npm run build
 
-# Start compiled production build
+# Start compiled production server
 npm run start
 ```
 
