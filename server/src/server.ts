@@ -1,10 +1,10 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import healthRouter from "@/routes/health.routes";
-import { notFoundMiddleware } from "@/middleware/notFound.middleware";
-import { errorMiddleware } from "@/middleware/error.middleware";
-import { env } from "@/config/env";
-import { connectDatabase, disconnectDatabase } from "@/lib/db";
+import { notFoundMiddleware } from "@/core/middleware/notFound.middleware";
+import { errorMiddleware } from "@/core/middleware/error.middleware";
+import { env } from "@/core/config/env";
+import { connectDatabase, disconnectDatabase } from "@/database/connection/db";
 import { Server } from "http";
 
 const app: Application = express();

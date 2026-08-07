@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
-import { ApiSuccess, ApiError } from "@/types/api.types";
-import { isDatabaseConnected } from "@/lib/db";
+import { ApiSuccess, ApiError } from "@/core/types/api.types";
+import { isDatabaseConnected } from "@/database/connection/db";
 
 const router = Router();
 

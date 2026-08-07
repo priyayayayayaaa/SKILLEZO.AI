@@ -28,7 +28,7 @@ MongoDB Atlas
 
 ## 📌 Implementation Status
 
-Current implementation progress: **Phases 1 through 7 Completed (Complete 10/10 Persistence Model Layer)**
+Current implementation progress: **Phases 1 through 9 Completed + Layered Architecture Refactoring**
 
 - [x] **PHASE 1 — Backend Foundation**: Environment configuration (Zod validation), structure setup, TypeScript setup, base dependencies (`express`, `mongoose`, `zod`, `jsonwebtoken`, `bcryptjs`).
 - [x] **PHASE 2 — MongoDB Connection + Core Infrastructure**: Mongoose connection manager with state management, graceful shutdown listeners (`SIGINT`/`SIGTERM`), CORS origin handling, liveness (`GET /api/health`), and database readiness (`GET /api/health/ready`) endpoints.
@@ -37,9 +37,10 @@ Current implementation progress: **Phases 1 through 7 Completed (Complete 10/10 
 - [x] **PHASE 5 — Dependent Mongoose Models**: `Profile` (embedded `skills`, `education`, `experience`, `links`), `Competency` (compound unique `{ roleId, skillName }`), `CompanyMember` (N:M bridge between `User` and `Company`).
 - [x] **PHASE 6 — Resume & Job Mongoose Models**: `Resume` (typed `extractedData`), `Job` (multi-references, embedded `location`, `salary`, `requiredSkills`).
 - [x] **PHASE 7 — Final Mongoose Models**: `CareerPlan` (typed `gapsData`), `Application` (N:M bridge between `User` and `Job` with `{ userId, jobId }` compound unique constraint). **Total: 10 / 10 Models Complete**.
-- [ ] **PHASE 8 — Database Model Audit & Freeze**
-- [ ] **PHASE 9 — Repository Layer**
-- [ ] **PHASE 10 — Service Layer & Business Logic**
+- [x] **PHASE 8 — Database Model Audit & Freeze**: Programmatic audit of 47 registered indexes across all 10 collections. Model persistence layer frozen with 0 schema drift.
+- [x] **PHASE 9 — Repository Layer Foundation**: Generic `IRepository<T>` interface and `BaseRepository<T>` abstract class. Implemented `UserRepository`, `ProfileRepository`, `RoleRepository`, `CompanyRepository`, and custom `RepositoryError` hierarchy (`EntityNotFoundError`, `DuplicateEntityError`, `DatabaseOperationError`).
+- [x] **ARCHITECTURE REFACTOR**: Restructured codebase into `src/core` (infrastructure/middleware/utils), `src/database` (connection, models, repositories), and `src/modules` (placeholder business modules).
+- [ ] **PHASE 10 — Authentication Module**
 
 ---
 
@@ -60,71 +61,70 @@ Current implementation progress: **Phases 1 through 7 Completed (Complete 10/10 
 
 ---
 
-## 📂 Project Structure
+## 🏢 Repository Layer Abstraction (`src/database/repositories/`)
+
+| Repository | Extends | Specialty Methods |
+|---|---|---|
+| **BaseRepository** | `IRepository<T>` | Generic `create`, `findById`, `findOne`, `findMany`, `updateById`, `deleteById`, `exists`, `count`, `paginate`, `aggregate`, `bulkInsert` |
+| **UserRepository** | `BaseRepository<IUser>` | `findByEmail`, `existsByEmail`, `findActiveUser`, `updatePassword`, `verifyEmail`, `updateLastLogin`, `changeAccountStatus` |
+| **ProfileRepository** | `BaseRepository<IProfile>` | `findByUserId`, `updateSkills`, `updateEducation`, `updateExperience`, `updateTargetRole`, `updateLinks`, `findProfilesByRole` |
+| **RoleRepository** | `BaseRepository<IRole>` | `findBySlug`, `findByName`, `findActiveRoles`, `findInactiveRoles` |
+| **CompanyRepository** | `BaseRepository<ICompany>` | `findBySlug`, `findVerifiedCompanies`, `findCompaniesByIndustry`, `updateVerificationStatus`, `findCreatedBy` |
+
+---
+
+## 📂 Refactored Project Structure
 
 ```text
-server/
-├── .env                              # Local environment variables (git-ignored)
-├── .env.example                      # Template environment variables
-├── package.json                      # Build & runner scripts
-├── tsconfig.json                     # TypeScript compiler configuration (@/* paths)
+server/src/
+├── core/                               # Core Infrastructure Layer
+│   ├── config/                         # Zod environment schema & config
+│   ├── constants/                      # Domain enums, error-codes, http-status
+│   ├── middleware/                     # Error, Not-Found, and Zod validate middleware
+│   ├── types/                          # API & Pagination response contracts
+│   ├── utils/                          # AppError, apiResponse, asyncHandler
+│   ├── validators/                     # Common Zod schemas (ObjectId, pagination)
+│   └── index.ts                        # Central core barrel export
 │
-├── doc/                              # Architectural phase documentation & walkthroughs
-│   ├── planes/
-│   │   ├── phase1.md ... phase7.md
-│   └── walkthrough/
-│       ├── phase4walkthrough.md
-│       ├── phase5walkthrough.md
-│       ├── phase6walkthrough.md
-│       └── phase7walkthrough.md
+├── database/                           # Persistence Layer
+│   ├── connection/                     # Mongoose connection manager (db.ts)
+│   ├── models/                         # 10 Frozen Mongoose Models
+│   │   ├── User.model.ts
+│   │   ├── Role.model.ts
+│   │   ├── Company.model.ts
+│   │   ├── Profile.model.ts
+│   │   ├── Competency.model.ts
+│   │   ├── CompanyMember.model.ts
+│   │   ├── Resume.model.ts
+│   │   ├── Job.model.ts
+│   │   ├── CareerPlan.model.ts
+│   │   ├── Application.model.ts
+│   │   └── index.ts                    # Barrel export for all 10 models
+│   └── repositories/                   # Abstract Repository Layer
+│       ├── base/                       # BaseRepository & IRepository
+│       ├── company/                    # CompanyRepository
+│       ├── errors/                     # RepositoryError classes
+│       ├── profile/                    # ProfileRepository
+│       ├── role/                       # RoleRepository
+│       ├── types/                      # Pagination & query types
+│       ├── user/                       # UserRepository
+│       └── index.ts                    # Repositories barrel export
 │
-└── src/
-    ├── config/
-    │   └── env.ts                    # Zod environment variable schema & export
-    │
-    ├── constants/
-    │   ├── enums.ts                  # Domain & database enums
-    │   ├── error-codes.ts            # Machine-readable error codes
-    │   ├── http-status.ts            # Standard numeric HTTP statuses
-    │   └── index.ts                  # Central constants re-export
-    │
-    ├── lib/
-    │   └── db.ts                     # Mongoose connection manager & event handlers
-    │
-    ├── middleware/
-    │   ├── error.middleware.ts       # Centralized Express error handler
-    │   ├── notFound.middleware.ts    # Catch-all 404 route handler
-    │   └── validate.middleware.ts   # Express Zod request validation pipeline
-    │
-    ├── models/                       # 10 / 10 Mongoose Persistence Models
-    │   ├── User.model.ts
-    │   ├── Role.model.ts
-    │   ├── Company.model.ts
-    │   ├── Profile.model.ts
-    │   ├── Competency.model.ts
-    │   ├── CompanyMember.model.ts
-    │   ├── Resume.model.ts
-    │   ├── Job.model.ts
-    │   ├── CareerPlan.model.ts
-    │   ├── Application.model.ts
-    │   └── index.ts                  # Barrel re-export for all 10 models
-    │
-    ├── routes/
-    │   └── health.routes.ts          # /api/health (Liveness) & /api/health/ready (Readiness)
-    │
-    ├── types/
-    │   ├── api.types.ts              # Generic ApiSuccess & ApiError response contracts
-    │   └── pagination.types.ts       # PaginationParams & PaginatedResult interfaces
-    │
-    ├── utils/
-    │   ├── apiResponse.ts            # Standardized API response formatters
-    │   ├── AppError.ts               # Custom operational error class
-    │   └── asyncHandler.ts           # Express async promise handler
-    │
-    ├── validators/
-    │   └── common.validators.ts      # objectIdSchema & paginationQuerySchema
-    │
-    └── server.ts                     # Express application entrypoint
+├── modules/                            # Future Business Feature Modules (Placeholders)
+│   ├── admin/
+│   ├── applications/
+│   ├── auth/
+│   ├── career-plan/
+│   ├── company/
+│   ├── jobs/
+│   ├── profile/
+│   ├── resume/
+│   └── users/
+│
+├── routes/                             # API HTTP Routes
+│   └── health.routes.ts                # /api/health (Liveness) & /api/health/ready (Readiness)
+│
+└── server.ts                           # Express Application Entrypoint
 ```
 
 ---
