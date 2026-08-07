@@ -80,14 +80,23 @@ export function Navbar({ onGetScore }: NavbarProps) {
           </Button>
         </div>
 
-        <button
-          className="lg:hidden text-white cursor-pointer"
-          onClick={() => setOpen((v) => !v)}
-          data-testid="mobile-menu-toggle"
-          aria-label="Menu"
-        >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <Link
+            href="/login"
+            data-testid="mobile-top-login-btn"
+            className="text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+          >
+            Login
+          </Link>
+          <button
+            className="text-white p-1.5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors"
+            onClick={() => setOpen((v) => !v)}
+            data-testid="mobile-menu-toggle"
+            aria-label="Menu"
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -99,7 +108,7 @@ export function Navbar({ onGetScore }: NavbarProps) {
             className="lg:hidden overflow-hidden glass-strong border-t border-white/5 mt-3"
             data-testid="mobile-menu"
           >
-            <div className="px-6 py-6 flex flex-col gap-4">
+            <div className="px-6 py-6 flex flex-col gap-3">
               {LINKS.map((l) => (
                 <a
                   key={l.label}
@@ -110,16 +119,27 @@ export function Navbar({ onGetScore }: NavbarProps) {
                   {l.label}
                 </a>
               ))}
-              <Button
-                onClick={() => {
-                  setOpen(false);
-                  onGetScore();
-                }}
-                className="rounded-full bg-[#3D5AFE] mt-2"
-                data-testid="mobile-cta-btn"
-              >
-                Get started
-              </Button>
+
+              <div className="flex flex-col gap-2.5 pt-3 border-t border-white/10 mt-1">
+                <Link
+                  href="/login"
+                  onClick={() => setOpen(false)}
+                  data-testid="mobile-drawer-login-btn"
+                  className="w-full text-center py-2.5 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-white font-semibold text-sm transition-colors cursor-pointer"
+                >
+                  Login
+                </Link>
+                <Button
+                  onClick={() => {
+                    setOpen(false);
+                    onGetScore();
+                  }}
+                  className="w-full rounded-xl bg-[#3D5AFE] hover:bg-[#3D5AFE]/90 py-2.5 text-white font-semibold"
+                  data-testid="mobile-cta-btn"
+                >
+                  Get started
+                </Button>
+              </div>
             </div>
           </motion.div>
         )}
