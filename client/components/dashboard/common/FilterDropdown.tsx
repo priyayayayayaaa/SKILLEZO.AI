@@ -29,10 +29,10 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="pl-9 pr-8 py-2 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-200 text-sm focus:outline-none focus:border-[#3D5AFE] focus:ring-1 focus:ring-[#3D5AFE] appearance-none cursor-pointer transition-all"
+          className="pl-9 pr-8 py-2 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-200 text-sm focus:outline-none focus:border-[#3D5AFE] focus:ring-1 focus:ring-[#3D5AFE] appearance-none cursor-pointer transition-all shadow-sm"
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-[#0B1130] text-slate-200">
+            <option key={opt.value} value={opt.value} className="bg-white dark:bg-[#0B1130] text-slate-900 dark:text-slate-200">
               {opt.label}
             </option>
           ))}

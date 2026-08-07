@@ -14,7 +14,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#0B1130] text-slate-100 flex flex-col font-sans selection:bg-[#3D5AFE]/30 selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B1130] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-[#3D5AFE]/30 selection:text-white">
       {/* Desktop Sidebar */}
       <Sidebar collapsed={collapsed} onToggleCollapse={() => setCollapsed(!collapsed)} />
 

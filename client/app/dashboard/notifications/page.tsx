@@ -53,9 +53,9 @@ export default function NotificationsPage() {
             unreadCount > 0 ? (
               <button
                 onClick={handleMarkAllRead}
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700/60 text-slate-200 hover:text-white hover:bg-slate-700 transition-colors text-xs font-semibold"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 text-slate-800 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-xs font-semibold cursor-pointer"
               >
-                <CheckCheck className="w-4 h-4 text-[#00D9C0]" />
+                <CheckCheck className="w-4 h-4 text-[#3D5AFE] dark:text-[#00D9C0]" />
                 <span>Mark All as Read</span>
               </button>
             ) : undefined
@@ -63,7 +63,7 @@ export default function NotificationsPage() {
         />
 
         {/* Filter Controls Bar */}
-        <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800 backdrop-blur-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 backdrop-blur-md flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm dark:shadow-md">
           <div className="flex-1 max-w-md">
             <NotificationSearch value={search} onChange={setSearch} />
           </div>

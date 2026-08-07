@@ -17,21 +17,21 @@ export const RecentVerificationTable: React.FC = () => {
       header: 'Skill & Category',
       cell: (row) => (
         <div>
-          <div className="font-bold text-slate-100">{row.skillName}</div>
-          <div className="text-xs text-slate-400">{row.category}</div>
+          <div className="font-bold text-slate-900 dark:text-slate-100">{row.skillName}</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400">{row.category}</div>
         </div>
       )
     },
     {
       header: 'Score',
       cell: (row) => (
-        <div className="font-semibold text-slate-200">
+        <div className="font-semibold text-slate-800 dark:text-slate-200">
           {row.status === 'verified' || row.status === 'failed' ? (
-            <span className={row.score >= 75 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
+            <span className={row.score >= 75 ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-rose-600 dark:text-rose-400 font-bold'}>
               {row.score}/{row.maxScore}
             </span>
           ) : (
-            <span className="text-slate-400 text-xs italic">N/A</span>
+            <span className="text-slate-400 dark:text-slate-500 text-xs italic">N/A</span>
           )}
         </div>
       )
@@ -42,12 +42,12 @@ export const RecentVerificationTable: React.FC = () => {
     },
     {
       header: 'Submitted',
-      cell: (row) => <span className="text-xs text-slate-400">{row.submittedDate}</span>
+      cell: (row) => <span className="text-xs text-slate-500 dark:text-slate-400">{row.submittedDate}</span>
     }
   ];
 
   return (
-    <div className="p-6 rounded-3xl bg-slate-900/50 border border-slate-800/80 backdrop-blur-md">
+    <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/80 backdrop-blur-md shadow-sm dark:shadow-md">
       <CardHeader
         title="Recent Skill Verifications"
         subtitle="Latest cryptographic & automated AI skill audits"

@@ -43,15 +43,15 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
   };
 
   const statusColors = {
-    online: 'bg-emerald-400 border-[#0B1130]',
-    offline: 'bg-slate-500 border-[#0B1130]',
-    busy: 'bg-rose-500 border-[#0B1130]'
+    online: 'bg-emerald-500 border-white dark:border-[#0B1130]',
+    offline: 'bg-slate-400 border-white dark:border-[#0B1130]',
+    busy: 'bg-rose-500 border-white dark:border-[#0B1130]'
   };
 
   return (
     <div className={`relative inline-block ${className}`}>
       <div
-        className={`${sizeClasses[size]} rounded-full overflow-hidden flex items-center justify-center font-semibold bg-gradient-to-tr from-[#3D5AFE] to-[#00D9C0] text-white shadow-md border border-white/10`}
+        className={`${sizeClasses[size]} rounded-full overflow-hidden flex items-center justify-center font-semibold bg-gradient-to-tr from-[#3D5AFE] to-[#00D9C0] text-white shadow-md border border-white/20`}
       >
         {avatarUrl ? (
           <Image

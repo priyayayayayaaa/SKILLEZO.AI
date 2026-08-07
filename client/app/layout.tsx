@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 export const metadata: Metadata = {
   title: "SKILLEZO.AI — Know Your Employability Score. Get Hired.",
@@ -15,8 +16,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className="h-full antialiased dark">
-      <body className="min-h-full flex flex-col bg-[#0B1130] text-white selection:bg-[#00D9C0] selection:text-[#0B1130]">
-        {children}
+      <body className="min-h-full flex flex-col bg-[#F8FAFC] dark:bg-[#0B1130] text-slate-900 dark:text-white selection:bg-[#3D5AFE]/30 selection:text-white transition-colors duration-200">
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

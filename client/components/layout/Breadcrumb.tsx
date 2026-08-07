@@ -16,10 +16,10 @@ export const Breadcrumb: React.FC = () => {
   };
 
   return (
-    <nav aria-label="Breadcrumb" className="hidden sm:flex items-center gap-1.5 text-xs text-slate-400">
+    <nav aria-label="Breadcrumb" className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
       <Link
         href="/dashboard"
-        className="flex items-center gap-1 hover:text-slate-200 transition-colors"
+        className="flex items-center gap-1 hover:text-slate-900 dark:hover:text-slate-200 transition-colors"
       >
         <Home className="w-3.5 h-3.5" />
       </Link>
@@ -30,11 +30,11 @@ export const Breadcrumb: React.FC = () => {
 
         return (
           <React.Fragment key={url}>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
             {isLast ? (
-              <span className="font-semibold text-slate-200">{formatSegment(segment)}</span>
+              <span className="font-semibold text-slate-900 dark:text-slate-200">{formatSegment(segment)}</span>
             ) : (
-              <Link href={url} className="hover:text-slate-200 transition-colors">
+              <Link href={url} className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">
                 {formatSegment(segment)}
               </Link>
             )}
