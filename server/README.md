@@ -28,7 +28,7 @@ MongoDB Atlas
 
 ## 📌 Implementation Status
 
-Current implementation progress: **Phases 1 through 10B Completed + Layered Architecture Refactoring**
+Current implementation progress: **Phases 1 through 10C Completed + Layered Architecture Refactoring**
 
 - [x] **PHASE 1 — Backend Foundation**: Environment configuration (Zod validation), structure setup, TypeScript setup, base dependencies (`express`, `mongoose`, `zod`).
 - [x] **PHASE 2 — MongoDB Connection + Core Infrastructure**: Mongoose connection manager with state management, graceful shutdown listeners (`SIGINT`/`SIGTERM`), CORS origin handling, liveness (`GET /api/health`), and database readiness (`GET /api/health/ready`) endpoints.
@@ -42,7 +42,8 @@ Current implementation progress: **Phases 1 through 10B Completed + Layered Arch
 - [x] **PHASE 9.5 — Better Auth Identity Migration**: Option A identity separation (Better Auth owns identity string `user.id`, SKILLEZO owns domain data). Migrated 9 user-referencing fields to `String`, removed Mongoose `ref: "User"` population dependencies, removed custom `passwordHash` ownership from SKILLEZO models/repositories, and preserved all domain `ObjectId` entity references.
 - [x] **PHASE 10A — Better Auth Installation & MongoDB Configuration**: Installed `better-auth` and `mongodb`, configured official `mongodbAdapter(mongoose.connection.db)`, created core `auth.ts` setup with restricted server-owned user fields (`role`, `accountStatus`, `lastLoginAt`), and updated `env.ts` / `.env.example`.
 - [x] **PHASE 10B — Better Auth Express Handler & Session Verification**: Integrated `toNodeHandler(auth)` in Express middleware pipeline (`/api/auth/*path`) before `express.json()`, enabled `emailAndPassword` auth, verified server-side session resolution via `auth.api.getSession`, and implemented temporary verification endpoint (`/api/auth-test/session`).
-- [ ] **PHASE 10C — Authentication Middleware & Protected Route Foundation**
+- [x] **PHASE 10C — Authentication Middleware & Protected Route Foundation**: Implemented `requireAuth` middleware using Better Auth `auth.api.getSession`, defined `AuthenticatedUserContext` (`user.id: string`), extended Express Request typing, implemented account status checks (`SUSPENDED`/`DEACTIVATED` → 403), and verified protected test route (`/api/auth-test/protected`).
+- [ ] **PHASE 11 — Core Application Layer Foundation (Profile Business Module)**
 
 ---
 
@@ -80,8 +81,10 @@ Current implementation progress: **Phases 1 through 10B Completed + Layered Arch
 ```text
 server/src/
 ├── core/                               # Core Infrastructure Layer
-│   ├── auth/                           # Better Auth Core Configuration
+│   ├── auth/                           # Better Auth & Authentication Boundary
+│   │   ├── middleware/                 # requireAuth middleware
 │   │   ├── auth.ts                     # betterAuth setup, mongodbAdapter, additionalFields
+│   │   ├── auth.types.ts               # AuthenticatedUserContext interface
 │   │   └── index.ts                    # Auth barrel export
 │   ├── config/                         # Zod environment schema & config
 │   ├── constants/                      # Domain enums, error-codes, http-status

@@ -44,4 +44,17 @@ router.get("/auth-test/session", async (req: Request, res: Response) => {
   }
 });
 
+import { requireAuth } from "@/core/auth";
+
+/**
+ * Temporary verification endpoint for Phase 10C testing only.
+ * Requires valid session via requireAuth middleware and returns req.user.
+ */
+router.get("/auth-test/protected", requireAuth, (req: Request, res: Response) => {
+  return res.status(200).json({
+    authenticated: true,
+    user: req.user,
+  });
+});
+
 export default router;
