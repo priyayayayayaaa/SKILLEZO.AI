@@ -134,7 +134,7 @@ export const StudentPortalGrid: React.FC = () => {
       category: 'core',
       title: 'Career Profile',
       subtitle: 'Manage target tech roles, preferences, and background info.',
-      href: '/dashboard/career-profile',
+      href: '/dashboard/profile',
       icon: UserCheck,
       badge: 'Profile',
       accentColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20',

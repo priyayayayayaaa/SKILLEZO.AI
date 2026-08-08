@@ -12,17 +12,11 @@ import {
   ChevronDown,
   Zap,
   GraduationCap,
-  UserCheck,
   FileText,
   Target,
   BarChart3,
   Compass,
-  FolderGit2,
-  CheckSquare,
-  Sparkles,
-  Briefcase,
-  LineChart,
-  Wallet,
+  UserCheck,
   LucideIcon,
 } from 'lucide-react';
 import BrandLogo from '@/components/auth/BrandLogo';
@@ -60,29 +54,54 @@ export type NavEntry = NavSingleItem | NavGroupItem;
 export const sidebarNavigation: NavEntry[] = [
   {
     type: 'item',
-    label: 'Dashboard',
+    label: 'Dashboard Overview',
     href: '/dashboard',
     icon: LayoutDashboard,
   },
   {
     type: 'item',
-    label: 'Student Portal',
+    label: 'Student Portal Hub',
     href: '/dashboard/student-portal',
     icon: GraduationCap,
     badge: 'Core',
   },
   {
-    type: 'item',
-    label: 'AI Career Coach',
-    href: '/dashboard/ai-career-coach',
-    icon: Sparkles,
-    badge: 'AI',
-  },
-  {
-    type: 'item',
-    label: 'Career GPS',
-    href: '/dashboard/career-gps',
+    type: 'group',
+    id: 'career-intelligence',
+    label: 'Career Intelligence',
     icon: Compass,
+    badge: 'AI System',
+    children: [
+      {
+        label: 'Career Profile',
+        href: '/dashboard/profile',
+        icon: UserCheck,
+      },
+      {
+        label: 'AI Resume Intelligence',
+        href: '/dashboard/resume-intelligence',
+        icon: FileText,
+        badge: 'Module 20',
+      },
+      {
+        label: 'Skill Gap Analysis',
+        href: '/dashboard/skill-gap-analysis',
+        icon: Target,
+        badge: 'Module 21',
+      },
+      {
+        label: 'Employability Index',
+        href: '/dashboard/employability-index',
+        icon: BarChart3,
+        badge: 'Module 22',
+      },
+      {
+        label: 'Career GPS Roadmap',
+        href: '/dashboard/career-gps',
+        icon: Compass,
+        badge: 'Module 23',
+      },
+    ],
   },
   {
     type: 'item',
@@ -115,7 +134,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
         const isChildActive = entry.children.some(
           (child) => pathname === child.href || pathname.startsWith(child.href)
         );
-        initial[entry.id] = isChildActive;
+        initial[entry.id] = isChildActive || true; // Expand Career Intelligence by default
       }
     });
     return initial;
@@ -202,12 +221,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                   </span>
                 )}
 
-                {!collapsed && entry.badgeCount && (
-                  <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#3D5AFE] text-white">
-                    {entry.badgeCount}
-                  </span>
-                )}
-
                 {/* Tooltip on collapse */}
                 {collapsed && (
                   <div className="absolute left-full ml-3 px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity shadow-xl z-50">
@@ -218,7 +231,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
             );
           }
 
-          // GROUP ITEM (Student Portal)
+          // GROUP ITEM
           const groupEntry = entry as NavGroupItem;
           const isGroupExpanded = !!openGroups[groupEntry.id];
           const isAnyChildActive = groupEntry.children.some(
@@ -323,8 +336,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
           <div className="inline-flex p-1.5 rounded-lg bg-[#3D5AFE]/15 text-[#3D5AFE] dark:text-[#00D9C0] mb-1">
             <Zap className="w-3.5 h-3.5" />
           </div>
-          <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">Student Portal Active</h4>
-          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Enterprise Dual-Theme UI</p>
+          <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">Career Intelligence</h4>
+          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Modules 20–23 Connected</p>
         </div>
       )}
     </aside>
