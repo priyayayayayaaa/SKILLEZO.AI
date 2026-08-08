@@ -1,6 +1,6 @@
 # SKILLEZO AI — Client
 
-> AI-Powered Skill Verification & Student Career Platform — Enterprise-grade Next.js frontend with premium glassmorphic architecture, complete authentication suite, interactive candidate dashboard, dedicated AI Student Portal, skill audit engine, user profile management, and account settings.
+> AI-Powered Skill Verification & Student Career Platform — Enterprise-grade Next.js frontend with premium glassmorphic architecture, complete authentication suite, interactive candidate dashboard, dedicated AI Student Portal, Phase 6 Career Intelligence & Smart Job Center, skill audit engine, user profile management, and account settings.
 
 ---
 
@@ -59,11 +59,15 @@ client/
 │   │   └── verify-email/
 │   ├── dashboard/              # 🟢 Dashboard Modules
 │   │   ├── student-portal/     # 🎓 Dedicated Student Portal Dashboard Hub
-│   │   │   └── page.tsx
+│   │   ├── job-center/         # 💼 Module 28: Smart Job Center
+│   │   ├── profile/            # 👤 Student Career Profile
+│   │   ├── resume-intelligence/# 📄 Module 20: AI Resume Intelligence
+│   │   ├── skill-gap-analysis/ # 🎯 Module 21: Skill Gap Analysis
+│   │   ├── employability-index/# 📊 Module 22: Employability Score
+│   │   ├── career-gps/         # 🧭 Module 23: Career GPS Roadmap
+│   │   ├── skill-verification/ # 🏆 Skill Verification Engine
 │   │   ├── notifications/      # Notifications Hub
-│   │   ├── profile/            # User Profile & Portfolio
 │   │   ├── settings/           # Dedicated Account Settings
-│   │   ├── skill-verification/ # Skill Verification Engine
 │   │   └── page.tsx            # Main Dashboard Overview
 │   ├── account-suspended/      # Standalone Security Route
 │   ├── api/                    # API Handlers
@@ -72,12 +76,9 @@ client/
 │   └── page.tsx                # Landing Page
 │
 ├── components/                 # UI Components
-│   ├── auth/                   # Auth Layout, Brand Panel & Form Cards
 │   ├── dashboard/              # Module Components
+│   │   ├── job-center/         # 💼 Smart Job Center Sub-Components (Filters, MatchScore, Drawer, ApplyModal)
 │   │   ├── student-portal/     # 🎓 Student Portal UI (Header, AI Coach, Grid)
-│   │   │   ├── StudentPortalHeader.tsx
-│   │   │   ├── AICareerCoachWidget.tsx
-│   │   │   └── StudentPortalGrid.tsx
 │   │   ├── notifications/      # Notifications UI
 │   │   ├── profile/            # Profile UI
 │   │   ├── settings/           # Settings UI
@@ -88,63 +89,46 @@ client/
 │   └── ui/                     # Primitives (Button, Dialog, Input, Toaster)
 │
 ├── doc/                        # Project Specifications & Walkthroughs
-├── mock/                       # Data Layer Mocks (Users, Verification, Dashboard, Notifications)
-├── types/                      # TypeScript Interfaces (User, Verification, Dashboard, Notification)
+├── mock/                       # Data Layer Mocks (Career Intelligence, Job Center, Users, Verification)
+├── types/                      # TypeScript Interfaces (Career Intelligence, Job Center, User, Verification)
 ├── lib/                        # Helpers & Utilities (cn, utils)
 └── public/                     # Static Assets & Icons
 ```
 
 ---
 
-## 📐 Application Modules & Features
+## 📐 Recent Implementations (Phase 6 & Job Portal Suite)
 
-### 1. 🎓 Dedicated Student Portal Dashboard (`/dashboard/student-portal`)
-- **Glassmorphic Hero Banner ([StudentPortalHeader.tsx](file:///c:/Users/PRIYA/vs%20codes/Skillezo.AI/client/components/dashboard/student-portal/StudentPortalHeader.tsx)):** Personalized greeting, target career role indicator (`Full-Stack Engineer`), Employability Index gauge (`78/100`), top rank badge, and quick AI actions.
-- **AI Career Coach Assistant ([AICareerCoachWidget.tsx](file:///c:/Users/PRIYA/vs%20codes/Skillezo.AI/client/components/dashboard/student-portal/AICareerCoachWidget.tsx)):** Live status pulse badge, click-to-ask prompt chips, and a quick query launcher.
-- **Categorized Tabbed Feature Grid ([StudentPortalGrid.tsx](file:///c:/Users/PRIYA/vs%20codes/Skillezo.AI/client/components/dashboard/student-portal/StudentPortalGrid.tsx)):** Filterable tabs (**All Modules**, **Core AI & Analytics**, **Skills & Learning**, **Jobs & Mentoring**) unifying 12 student portal tools:
-  1. **Career Profile**: Target roles, tech stack, and background preferences.
-  2. **Resume Intelligence**: AI resume audit, skill extraction, and ATS scoring.
-  3. **Skill Gap Analysis**: High-impact skill missing competencies identification.
-  4. **Employability Index**: Job-readiness metric evaluating skills & projects.
-  5. **Career GPS**: Step-by-step personalized career path roadmap.
-  6. **Learning Hub**: AI-curated learning paths tailored to skill gaps.
-  7. **Projects & Portfolio**: Hands-on projects with AI code mentor guidance.
-  8. **Skill Assessments**: Technical evaluations & verified certificates.
-  9. **AI Career Coach**: 24/7 AI mentor for mock interviews and advice.
-  10. **Job Center**: Smart job matching based on skill match scores.
-  11. **Progress & Analytics**: Growth charts tracking learning curves over time.
-  12. **Wallet & Tokens**: AI token credit balance and subscription tier management.
+### 1. 💼 Module 28: Smart Job Center (`/dashboard/job-center`)
+- **Advanced Multi-Filter Search Bar:** Search by title, company, or skills, with location, job type (Full-Time, Contract, Remote), salary range, and experience level filters.
+- **AI Match Score Engine:** Real-time job compatibility calculation analyzing candidate skills against job requirements (`90%+ Exceptional`, `80-89% Strong`, `70-79% Moderate`, `<70% Low`).
+- **Interactive Job Details Drawer:** Deep dive into responsibilities, required skills, match score breakdown, and company perks.
+- **One-Click Application Modal:** Select stored resumes, attach custom cover letters, and submit applications directly.
+- **Saved Jobs & Application Tracker:** Dedicated tabs for tracking saved positions and application status progression (`Submitted`, `Under Review`, `Interview Scheduled`, `Offer Received`).
 
-### 2. 🏠 Landing Page (`/`)
-- Interactive marketing homepage featuring AI score modal (`ScoreDialog`), hero showcase, feature grid, pricing options, success stories, and CTA section.
+### 2. 🧠 Career Intelligence Suite (Modules 20–23)
+- **Module 20: AI Resume Intelligence (`/dashboard/resume-intelligence`):** ATS score analyzer, extracted skill breakdown, formatting audit, and actionable improvement tips.
+- **Module 21: Skill Gap Analysis (`/dashboard/skill-gap-analysis`):** Critical skill deficiency detection, course recommendations, and priority action items.
+- **Module 22: Employability Score / Index (`/dashboard/employability-index`):** Candidate percentile benchmark (`Top 15%`), readiness metrics, and verified strength highlights.
+- **Module 23: Career GPS Roadmap (`/dashboard/career-gps`):** Step-by-step career path milestones with progress tracking and estimated timelines.
 
-### 3. 🔐 Authentication Suite (`app/(auth)`)
-- **Login (`/login`):** Email & Password login with Zod validation, OAuth social options, remember-me check.
-- **Register (`/register`):** User registration with password complexity scoring and terms acceptance.
-- **Forgot Password (`/forgot-password`):** Password reset request workflow with toast confirmation.
-- **Reset Password (`/reset-password`):** Secure new password submission.
-- **Verify Email (`/verify-email`):** Resend countdown timer and verification flow.
-- **Account Suspended (`/account-suspended`):** Standalone security alert screen with support actions.
+### 3. 🎓 Dedicated Student Portal Dashboard (`/dashboard/student-portal`)
+- **Glassmorphic Hero Banner ([StudentPortalHeader.tsx](file:///c:/Users/PRIYA/vs%20codes/Skillezo.AI/client/components/dashboard/student-portal/StudentPortalHeader.tsx)):** Personalized greeting, target role indicator, Employability Index gauge, top rank badge, and quick AI actions.
+- **AI Career Coach Assistant ([AICareerCoachWidget.tsx](file:///c:/Users/PRIYA/vs%20codes/Skillezo.AI/client/components/dashboard/student-portal/AICareerCoachWidget.tsx)):** Live status badge, click-to-ask prompt chips, and quick mentor query launcher.
+- **Categorized Feature Grid ([StudentPortalGrid.tsx](file:///c:/Users/PRIYA/vs%20codes/Skillezo.AI/client/components/dashboard/student-portal/StudentPortalGrid.tsx)):** Unifies all student career tools in a filterable grid with zero 404 fallback routing.
 
-### 4. 📊 Dashboard Overview (`/dashboard`)
-- **Metric Stat Cards:** Verified Skills, Skill Health Score (94%), Pending Audits, Global Benchmark Rank.
-- **Skill Growth Chart:** Interactive Recharts line graph tracking score progression over time.
-- **Recent Verification Table:** Tabular summary with status badges (`Verified`, `Pending`, `In Review`, `Failed`).
-
-### 5. 🏆 Skill Verification Engine (`/dashboard/skill-verification`)
-- Filterable candidate skill audit directory by **Status** and **Category**.
-- Interactive detail drawer inspecting audit breakdown score, verification timestamp, telemetry data, and verified certificate credentials.
-
-### 6. 👤 User Profile & Portfolio (`/dashboard/profile`)
-- **Profile Banner & Hero:** Candidate avatar, status badge, location, title, and social links.
-- **Verified Skills & Certifications:** Categorized skills grid with level metrics and credential IDs.
-- **Profile Completion Widget:** Progress meter tracking profile readiness.
-
-### 7. ⚙️ Dedicated Account Settings (`/dashboard/settings`)
-- Profile preferences, security/password controls, notifications toggles, theme options, and account export.
-
-### 8. 🔔 Notifications Center (`/dashboard/notifications` & Dropdown)
-- Header bell icon dropdown with live unread badge and dedicated notifications page with category filters.
+### 4. 🗂️ Unified Sidebar Architecture (`client/components/layout/Sidebar.tsx`)
+- Clean, non-duplicated navigation structure with zero group nesting clutter or module badges.
+- Single top-level standalone entries for:
+  - 📊 **Dashboard Overview** (`/dashboard`)
+  - 🎓 **Student Portal Hub** (`/dashboard/student-portal`) [CORE]
+  - 💼 **Smart Job Center** (`/dashboard/job-center`) [JOBS]
+  - 👤 **Career Profile** (`/dashboard/profile`)
+  - 📄 **AI Resume Intelligence** (`/dashboard/resume-intelligence`)
+  - 🎯 **Skill Gap Analysis** (`/dashboard/skill-gap-analysis`)
+  - 📊 **Employability Score** (`/dashboard/employability-index`)
+  - 🧭 **Career GPS Roadmap** (`/dashboard/career-gps`)
+  - 🏆 **Skill Verification** (`/dashboard/skill-verification`) [VERIFIED]
 
 ---
 

@@ -18,7 +18,6 @@ import {
   Compass,
   UserCheck,
   Briefcase,
-  Brain,
   LucideIcon,
 } from 'lucide-react';
 import BrandLogo from '@/components/auth/BrandLogo';
@@ -103,13 +102,6 @@ export const sidebarNavigation: NavEntry[] = [
     label: 'Career GPS Roadmap',
     href: '/dashboard/career-gps',
     icon: Compass,
-  },
-  {
-    type: 'item',
-    label: 'Career Intelligence',
-    href: '/dashboard/student-portal',
-    icon: Brain,
-    badge: 'AI SYSTEM',
   },
   {
     type: 'item',
@@ -344,8 +336,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
           <div className="inline-flex p-1.5 rounded-lg bg-[#3D5AFE]/15 text-[#3D5AFE] dark:text-[#00D9C0] mb-1">
             <Zap className="w-3.5 h-3.5" />
           </div>
-          <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">Career & Job Portal</h4>
-          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Modules 20–28 Active</p>
+          <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">Student Portal</h4>
+          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Career & Job Portal</p>
         </div>
       )}
     </aside>

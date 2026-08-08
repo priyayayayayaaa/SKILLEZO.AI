@@ -34,7 +34,7 @@ export default function ResumeIntelligencePage() {
         <PageHeader
           title="AI Resume Intelligence"
           description="Analyze your resume against your target career role with automated ATS scoring & keyword audit."
-          badge="Module 20 • Resume Intelligence"
+          badge=" • Resume Intelligence"
         />
 
         {/* Upload & Score Card Grid */}
