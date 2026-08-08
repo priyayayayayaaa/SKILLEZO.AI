@@ -19,7 +19,10 @@ app.use(
 );
 
 // Better Auth handler mounted BEFORE express.json() for raw body access
-app.all("/api/auth/*path", (req, res) => {
+app.use("/api/auth", (req, res) => {
+  if (!req.headers.origin && !req.headers.Origin) {
+    req.headers.origin = "http://localhost:5000";
+  }
   authHandler(req, res);
 });
 
