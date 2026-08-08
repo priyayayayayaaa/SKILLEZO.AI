@@ -17,6 +17,7 @@ import {
   BarChart3,
   Compass,
   UserCheck,
+  Briefcase,
   LucideIcon,
 } from 'lucide-react';
 import BrandLogo from '@/components/auth/BrandLogo';
@@ -59,11 +60,53 @@ export const sidebarNavigation: NavEntry[] = [
     icon: LayoutDashboard,
   },
   {
-    type: 'item',
+    type: 'group',
+    id: 'student-portal-hub',
     label: 'Student Portal Hub',
-    href: '/dashboard/student-portal',
     icon: GraduationCap,
     badge: 'Core',
+    children: [
+      {
+        label: 'Portal Overview',
+        href: '/dashboard/student-portal',
+        icon: GraduationCap,
+      },
+      {
+        label: 'Smart Job Center',
+        href: '/dashboard/job-center',
+        icon: Briefcase,
+        badge: 'Jobs',
+      },
+      {
+        label: 'Career Profile',
+        href: '/dashboard/profile',
+        icon: UserCheck,
+      },
+      {
+        label: 'AI Resume Intelligence',
+        href: '/dashboard/resume-intelligence',
+        icon: FileText,
+        badge: 'Module 20',
+      },
+      {
+        label: 'Skill Gap Analysis',
+        href: '/dashboard/skill-gap-analysis',
+        icon: Target,
+        badge: 'Module 21',
+      },
+      {
+        label: 'Employability Index',
+        href: '/dashboard/employability-index',
+        icon: BarChart3,
+        badge: 'Module 22',
+      },
+      {
+        label: 'Career GPS Roadmap',
+        href: '/dashboard/career-gps',
+        icon: Compass,
+        badge: 'Module 23',
+      },
+    ],
   },
   {
     type: 'group',
@@ -81,24 +124,31 @@ export const sidebarNavigation: NavEntry[] = [
         label: 'AI Resume Intelligence',
         href: '/dashboard/resume-intelligence',
         icon: FileText,
-
+        badge: 'Module 20',
       },
       {
         label: 'Skill Gap Analysis',
         href: '/dashboard/skill-gap-analysis',
         icon: Target,
+        badge: 'Module 21',
       },
       {
         label: 'Employability Index',
         href: '/dashboard/employability-index',
         icon: BarChart3,
-
+        badge: 'Module 22',
       },
       {
         label: 'Career GPS Roadmap',
         href: '/dashboard/career-gps',
         icon: Compass,
-
+        badge: 'Module 23',
+      },
+      {
+        label: 'Smart Job Center',
+        href: '/dashboard/job-center',
+        icon: Briefcase,
+        badge: 'Module 28',
       },
     ],
   },
@@ -114,12 +164,12 @@ export const sidebarNavigation: NavEntry[] = [
 export const sidebarNavItems: NavSingleItem[] = sidebarNavigation.flatMap((entry) =>
   entry.type === 'group'
     ? entry.children.map((child) => ({
-      type: 'item' as const,
-      label: child.label,
-      href: child.href,
-      icon: child.icon,
-      badge: child.badge,
-    }))
+        type: 'item' as const,
+        label: child.label,
+        href: child.href,
+        icon: child.icon,
+        badge: child.badge,
+      }))
     : [entry]
 );
 
@@ -133,7 +183,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
         const isChildActive = entry.children.some(
           (child) => pathname === child.href || pathname.startsWith(child.href)
         );
-        initial[entry.id] = isChildActive || true; // Expand Career Intelligence by default
+        initial[entry.id] = isChildActive || true; // Expand groups by default
       }
     });
     return initial;
@@ -164,8 +214,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
 
   return (
     <aside
-      className={`hidden md:flex flex-col fixed top-0 left-0 bottom-0 z-40 bg-white/95 dark:bg-[#080D26]/95 border-r border-slate-200 dark:border-slate-800/80 backdrop-blur-xl transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'
-        }`}
+      className={`hidden md:flex flex-col fixed top-0 left-0 bottom-0 z-40 bg-white/95 dark:bg-[#080D26]/95 border-r border-slate-200 dark:border-slate-800/80 backdrop-blur-xl transition-all duration-300 ${
+        collapsed ? 'w-20' : 'w-64'
+      }`}
     >
       {/* Header / Brand */}
       <div className="h-16 px-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-800/80 shrink-0">
@@ -199,14 +250,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
               <Link
                 key={entry.href}
                 href={entry.href}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all group relative ${isActive
-                  ? 'bg-[#3D5AFE]/10 dark:bg-gradient-to-r dark:from-[#3D5AFE]/25 dark:to-[#3D5AFE]/5 text-[#3D5AFE] dark:text-white border-l-2 border-[#3D5AFE] shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/50'
-                  }`}
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all group relative ${
+                  isActive
+                    ? 'bg-[#3D5AFE]/10 dark:bg-gradient-to-r dark:from-[#3D5AFE]/25 dark:to-[#3D5AFE]/5 text-[#3D5AFE] dark:text-white border-l-2 border-[#3D5AFE] shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/50'
+                }`}
               >
                 <Icon
-                  className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-[#3D5AFE]' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200'
-                    }`}
+                  className={`w-4 h-4 shrink-0 transition-colors ${
+                    isActive ? 'text-[#3D5AFE]' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200'
+                  }`}
                 />
 
                 {!collapsed && <span className="truncate">{entry.label}</span>}
@@ -231,7 +284,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
           const groupEntry = entry as NavGroupItem;
           const isGroupExpanded = !!openGroups[groupEntry.id];
           const isAnyChildActive = groupEntry.children.some(
-            (child) => pathname === child.href || pathname.startsWith(child.href)
+            (child) => pathname === child.href || (child.href !== '/dashboard/student-portal' && pathname.startsWith(child.href))
           );
           const GroupIcon = groupEntry.icon;
 
@@ -239,14 +292,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
             <div key={groupEntry.id} className="space-y-1">
               <button
                 onClick={() => toggleGroup(groupEntry.id)}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all group relative cursor-pointer ${isAnyChildActive
-                  ? 'bg-[#3D5AFE]/10 text-[#3D5AFE] dark:text-white border-l-2 border-[#3D5AFE]/80'
-                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50'
-                  }`}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all group relative cursor-pointer ${
+                  isAnyChildActive
+                    ? 'bg-[#3D5AFE]/10 text-[#3D5AFE] dark:text-white border-l-2 border-[#3D5AFE]/80'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50'
+                }`}
               >
                 <GroupIcon
-                  className={`w-4 h-4 shrink-0 transition-colors ${isAnyChildActive ? 'text-[#3D5AFE] dark:text-[#00D9C0]' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200'
-                    }`}
+                  className={`w-4 h-4 shrink-0 transition-colors ${
+                    isAnyChildActive ? 'text-[#3D5AFE] dark:text-[#00D9C0]' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200'
+                  }`}
                 />
 
                 {!collapsed && <span className="truncate text-left flex-1 font-bold">{groupEntry.label}</span>}
@@ -287,21 +342,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                     >
                       {groupEntry.children.map((child) => {
                         const isChildActive =
-                          pathname === child.href || pathname.startsWith(child.href);
+                          pathname === child.href || (child.href !== '/dashboard/student-portal' && pathname.startsWith(child.href));
                         const ChildIcon = child.icon;
 
                         return (
                           <Link
                             key={child.href}
                             href={child.href}
-                            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] font-medium transition-all group ${isChildActive
-                              ? 'bg-[#3D5AFE]/10 dark:bg-gradient-to-r dark:from-[#3D5AFE]/25 dark:to-transparent text-[#3D5AFE] dark:text-white font-bold'
-                              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/40'
-                              }`}
+                            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] font-medium transition-all group ${
+                              isChildActive
+                                ? 'bg-[#3D5AFE]/10 dark:bg-gradient-to-r dark:from-[#3D5AFE]/25 dark:to-transparent text-[#3D5AFE] dark:text-white font-bold'
+                                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/40'
+                            }`}
                           >
                             <ChildIcon
-                              className={`w-3.5 h-3.5 shrink-0 ${isChildActive ? 'text-[#3D5AFE] dark:text-[#00D9C0]' : 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300'
-                                }`}
+                              className={`w-3.5 h-3.5 shrink-0 ${
+                                isChildActive ? 'text-[#3D5AFE] dark:text-[#00D9C0]' : 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300'
+                              }`}
                             />
                             <span className="truncate">{child.label}</span>
 
@@ -328,8 +385,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
           <div className="inline-flex p-1.5 rounded-lg bg-[#3D5AFE]/15 text-[#3D5AFE] dark:text-[#00D9C0] mb-1">
             <Zap className="w-3.5 h-3.5" />
           </div>
-          <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">Career Intelligence</h4>
-          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5"> </p>
+          <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">Career & Job Portal</h4>
+          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Modules 20–28 Connected</p>
         </div>
       )}
     </aside>
