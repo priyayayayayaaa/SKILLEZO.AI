@@ -6,10 +6,6 @@ dotenv.config();
 const envSchema = z.object({
   PORT: z.string().default("5000"),
   MONGODB_URI: z.string().min(1, "MONGODB_URI is required"),
-  JWT_ACCESS_SECRET: z.string().min(1, "JWT_ACCESS_SECRET is required"),
-  JWT_REFRESH_SECRET: z.string().min(1, "JWT_REFRESH_SECRET is required"),
-  JWT_ACCESS_EXPIRES_IN: z.string().default("15m"),
-  JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
   CLIENT_URL: z.string().url().default("http://localhost:3000"),
   BETTER_AUTH_SECRET: z.string().min(1, "BETTER_AUTH_SECRET is required").default("development_secret_key_change_in_production_32chars"),
   BETTER_AUTH_URL: z.string().url().default("http://localhost:5000"),
