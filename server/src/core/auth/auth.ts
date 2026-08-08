@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { toNodeHandler } from "better-auth/node";
 import mongoose from "mongoose";
 import { env } from "@/core/config/env";
 import { UserRole, AccountStatus } from "@/core/constants/enums";
@@ -8,6 +9,9 @@ export const auth = betterAuth({
   database: mongodbAdapter(mongoose.connection.db as any),
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
+  emailAndPassword: {
+    enabled: true,
+  },
   user: {
     additionalFields: {
       role: {
@@ -30,5 +34,7 @@ export const auth = betterAuth({
     },
   },
 });
+
+export const authHandler = toNodeHandler(auth);
 
 export type Auth = typeof auth;
