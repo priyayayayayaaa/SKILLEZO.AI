@@ -28,19 +28,20 @@ MongoDB Atlas
 
 ## 📌 Implementation Status
 
-Current implementation progress: **Phases 1 through 9 Completed + Layered Architecture Refactoring**
+Current implementation progress: **Phases 1 through 10A Completed + Layered Architecture Refactoring**
 
-- [x] **PHASE 1 — Backend Foundation**: Environment configuration (Zod validation), structure setup, TypeScript setup, base dependencies (`express`, `mongoose`, `zod`, `jsonwebtoken`, `bcryptjs`).
+- [x] **PHASE 1 — Backend Foundation**: Environment configuration (Zod validation), structure setup, TypeScript setup, base dependencies (`express`, `mongoose`, `zod`).
 - [x] **PHASE 2 — MongoDB Connection + Core Infrastructure**: Mongoose connection manager with state management, graceful shutdown listeners (`SIGINT`/`SIGTERM`), CORS origin handling, liveness (`GET /api/health`), and database readiness (`GET /api/health/ready`) endpoints.
-- [x] **PHASE 3 — Shared Backend Infrastructure**: Domain enums, machine-readable error codes (`ERROR_CODES`), numeric HTTP status (`HTTP_STATUS`), custom operational `AppError`, generic `apiResponse` contracts, `asyncHandler`, Zod `validate` request middleware, `objectIdSchema`, `paginationQuerySchema`, `notFoundMiddleware`, and central `errorMiddleware`.
+- [x] **PHASE 3 — Shared Backend Infrastructure**: Domain enums, machine-readable error codes (`ERROR_CODES`), numeric HTTP status (`HTTP_STATUS`), custom operational `AppError`, generic `apiResponse` contracts, `asyncHandler`, Zod `validate` request middleware, `objectIdSchema`, `userIdSchema`, `paginationQuerySchema`, `notFoundMiddleware`, and central `errorMiddleware`.
 - [x] **PHASE 4 — Root Mongoose Models**: `User`, `Role`, `Company` models with indexes, defaults, and schema validations.
 - [x] **PHASE 5 — Dependent Mongoose Models**: `Profile` (embedded `skills`, `education`, `experience`, `links`), `Competency` (compound unique `{ roleId, skillName }`), `CompanyMember` (N:M bridge between `User` and `Company`).
 - [x] **PHASE 6 — Resume & Job Mongoose Models**: `Resume` (typed `extractedData`), `Job` (multi-references, embedded `location`, `salary`, `requiredSkills`).
 - [x] **PHASE 7 — Final Mongoose Models**: `CareerPlan` (typed `gapsData`), `Application` (N:M bridge between `User` and `Job` with `{ userId, jobId }` compound unique constraint). **Total: 10 / 10 Models Complete**.
 - [x] **PHASE 8 — Database Model Audit & Freeze**: Programmatic audit of 47 registered indexes across all 10 collections. Model persistence layer frozen with 0 schema drift.
 - [x] **PHASE 9 — Repository Layer Foundation**: Generic `IRepository<T>` interface and `BaseRepository<T>` abstract class. Implemented `UserRepository`, `ProfileRepository`, `RoleRepository`, `CompanyRepository`, and custom `RepositoryError` hierarchy (`EntityNotFoundError`, `DuplicateEntityError`, `DatabaseOperationError`).
-- [x] **ARCHITECTURE REFACTOR**: Restructured codebase into `src/core` (infrastructure/middleware/utils), `src/database` (connection, models, repositories), and `src/modules` (placeholder business modules).
-- [ ] **PHASE 10 — Authentication Module**
+- [x] **PHASE 9.5 — Better Auth Identity Migration**: Option A identity separation (Better Auth owns identity string `user.id`, SKILLEZO owns domain data). Migrated 9 user-referencing fields to `String`, removed Mongoose `ref: "User"` population dependencies, removed custom `passwordHash` ownership from SKILLEZO models/repositories, and preserved all domain `ObjectId` entity references.
+- [x] **PHASE 10A — Better Auth Installation & MongoDB Configuration**: Installed `better-auth` and `mongodb`, configured official `mongodbAdapter(mongoose.connection.db)`, created core `auth.ts` setup with restricted server-owned user fields (`role`, `accountStatus`, `lastLoginAt`), and updated `env.ts` / `.env.example`.
+- [ ] **PHASE 10B — Better Auth Express Handler & Session Verification**
 
 ---
 
@@ -48,16 +49,16 @@ Current implementation progress: **Phases 1 through 9 Completed + Layered Archit
 
 | # | Model | Collection | Primary / Compound Unique Indexes | Key References / Embedded Features |
 |---|---|---|---|---|
-| 01 | **User** | `users` | `{ email: 1 }` (Unique) | `passwordHash` (`select: false`), normalized `email` |
+| 01 | **User** | `users` | `{ email: 1 }` (Unique) | `_id: string` (Better Auth User ID), domain projection (`email`, `role`, `accountStatus`) |
 | 02 | **Role** | `roles` | `{ slug: 1 }` (Unique) | Normalized `slug`, role status |
-| 03 | **Company** | `companies` | `{ slug: 1 }` (Unique) | `location` subdocument, `createdBy` -> `User` |
-| 04 | **Profile** | `profiles` | `{ userId: 1 }` (Unique) | Embedded `skills`, `education`, `experience`, `links` |
+| 03 | **Company** | `companies` | `{ slug: 1 }` (Unique) | `location` subdocument, `createdBy` -> `String` (Better Auth User ID) |
+| 04 | **Profile** | `profiles` | `{ userId: 1 }` (Unique) | `userId` -> `String`, `targetRoleId` -> `Role`, embedded `skills`, `education`, `experience`, `links` |
 | 05 | **Competency** | `competencies` | `{ roleId: 1, skillName: 1 }` (Unique) | `roleId` -> `Role`, `CompetencyImportance` enum |
-| 06 | **CompanyMember** | `company_members` | `{ userId: 1, companyId: 1 }` (Unique) | Bridge between `User` & `Company`, `invitedBy` -> `User` |
-| 07 | **Resume** | `resumes` | `{ userId: 1, createdAt: -1 }` | `userId` -> `User`, typed `extractedData` |
-| 08 | **Job** | `jobs` | `{ companyId: 1, status: 1 }`, `{ roleId: 1, status: 1 }` | `companyId` -> `Company`, `roleId` -> `Role`, `createdBy` -> `User` |
-| 09 | **CareerPlan** | `career_plans` | `{ userId: 1, roleId: 1, createdAt: -1 }` | `userId` -> `User`, `roleId` -> `Role`, typed `gapsData` |
-| 10 | **Application** | `applications` | `{ userId: 1, jobId: 1 }` (Unique) | Bridge between `User` & `Job`, `resumeId` -> `Resume`, `statusHistory` |
+| 06 | **CompanyMember** | `company_members` | `{ userId: 1, companyId: 1 }` (Unique) | Bridge between User & Company, `userId` -> `String`, `companyId` -> `Company`, `invitedBy` -> `String` |
+| 07 | **Resume** | `resumes` | `{ userId: 1, createdAt: -1 }` | `userId` -> `String`, typed `extractedData` |
+| 08 | **Job** | `jobs` | `{ companyId: 1, status: 1 }`, `{ roleId: 1, status: 1 }` | `companyId` -> `Company`, `roleId` -> `Role`, `createdBy` -> `String` |
+| 09 | **CareerPlan** | `career_plans` | `{ userId: 1, roleId: 1, createdAt: -1 }` | `userId` -> `String`, `roleId` -> `Role`, typed `gapsData` |
+| 10 | **Application** | `applications` | `{ userId: 1, jobId: 1 }` (Unique) | Bridge between User & Job, `userId` -> `String`, `jobId` -> `Job`, `resumeId` -> `Resume`, `statusHistory` |
 
 ---
 

@@ -83,22 +83,29 @@ They will NOT initially become independent collections.
 
 # 3. Global MongoDB Conventions
 
-## IDs
+## Authentication & Entity IDs
 
-MongoDB ObjectId will be used internally.
+Authentication Provider: **Better Auth**
 
-```ts id="xj0y8r"
-_id: Schema.Types.ObjectId
+- **Authenticated User ID**: `String` (managed by Better Auth)
+- **Domain Entity IDs**: `MongoDB ObjectId` (e.g. `_id` for Profile, Resume, Role, Competency, Company, CompanyMember, Job, Application, CareerPlan)
+
+User Reference Fields (Better Auth User ID → `String`):
+```ts
+userId
+createdBy
+invitedBy
+changedBy
 ```
 
-References:
-
-```ts id="xue7h4"
-userId
-roleId
+Domain Entity Reference Fields (Domain Object → `ObjectId`):
+```ts
 companyId
+roleId
 jobId
+resumeId
 targetRoleId
+sourceResumeId
 ```
 
 ---
@@ -157,7 +164,7 @@ jobId
 
 ## Purpose
 
-Authentication, authorization, and account-level information.
+Authentication identity representation and account-level domain details. Better Auth owns credentials, sessions, accounts, and verification. Custom password handling is NOT managed by SKILLEZO application code.
 
 Candidate-specific information does NOT belong here.
 
@@ -165,10 +172,9 @@ Candidate-specific information does NOT belong here.
 
 ```ts id="v5ynkr"
 User {
-  _id: ObjectId,
+  _id: String,
 
   email: String,
-  passwordHash: String,
 
   role: String,
 
@@ -186,9 +192,8 @@ User {
 
 | Field           | Type     | Required | Default   | Indexed |
 | --------------- | -------- | -------: | --------- | ------: |
-| `_id`           | ObjectId |     Auto | Auto      |     Yes |
+| `_id`           | String   |     Auto | Auto      |     Yes |
 | `email`         | String   |      Yes | —         |  Unique |
-| `passwordHash`  | String   |      Yes | —         |      No |
 | `role`          | String   |      Yes | candidate |     Yes |
 | `emailVerified` | Boolean  |      Yes | false     |      No |
 | `accountStatus` | String   |      Yes | active    |     Yes |
@@ -230,8 +235,6 @@ Email must be normalized before saving:
 trim
 lowercase
 ```
-
-`passwordHash` must never be included in normal API responses.
 
 ---
 

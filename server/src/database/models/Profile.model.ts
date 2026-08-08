@@ -40,7 +40,7 @@ export interface IProfileLocation {
 
 export interface IProfile extends Document {
   _id: Types.ObjectId;
-  userId: Types.ObjectId;
+  userId: string;
   targetRoleId?: Types.ObjectId | null;
   bio?: string | null;
   skills: IProfileSkill[];
@@ -116,8 +116,7 @@ const profileLocationSchema = new Schema<IProfileLocation>(
 const profileSchema = new Schema<IProfile>(
   {
     userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
       unique: true,
       index: true,

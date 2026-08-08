@@ -3,11 +3,11 @@ import { CompanyMemberRole, CompanyMemberStatus } from "@/core/constants/enums";
 
 export interface ICompanyMember extends Document {
   _id: Types.ObjectId;
-  userId: Types.ObjectId;
+  userId: string;
   companyId: Types.ObjectId;
   role: CompanyMemberRole;
   status: CompanyMemberStatus;
-  invitedBy?: Types.ObjectId | null;
+  invitedBy?: string | null;
   joinedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -16,8 +16,7 @@ export interface ICompanyMember extends Document {
 const companyMemberSchema = new Schema<ICompanyMember>(
   {
     userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
       index: true,
     },
@@ -40,8 +39,7 @@ const companyMemberSchema = new Schema<ICompanyMember>(
       default: CompanyMemberStatus.INVITED,
     },
     invitedBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       default: null,
     },
     joinedAt: {

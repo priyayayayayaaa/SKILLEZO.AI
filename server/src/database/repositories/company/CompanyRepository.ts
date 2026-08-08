@@ -24,7 +24,7 @@ export class CompanyRepository extends BaseRepository<ICompany> {
     return await this.updateById(id, { verificationStatus: status });
   }
 
-  async findCreatedBy(userId: string | Types.ObjectId): Promise<ICompany[]> {
+  async findCreatedBy(userId: string): Promise<ICompany[]> {
     return await this.findMany({ createdBy: userId });
   }
 }

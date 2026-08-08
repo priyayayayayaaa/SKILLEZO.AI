@@ -3,7 +3,7 @@ import { IRepository } from "./IRepository";
 import { FindOptions, MongooseFilterQuery, PaginationOptions, PaginationResult, UpdateOptions } from "../types";
 import { DatabaseOperationError, DuplicateEntityError } from "../errors/RepositoryError";
 
-export abstract class BaseRepository<T extends Document> implements IRepository<T> {
+export abstract class BaseRepository<T extends Document<any, any, any>> implements IRepository<T> {
   protected readonly model: Model<T>;
   protected readonly entityName: string;
 

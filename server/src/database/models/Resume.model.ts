@@ -57,7 +57,7 @@ export interface IResumeExtractedData {
 
 export interface IResume extends Document {
   _id: Types.ObjectId;
-  userId: Types.ObjectId;
+  userId: string;
   fileUrl: string;
   fileName: string;
   mimeType: string;
@@ -147,8 +147,7 @@ const extractedDataSchema = new Schema<IResumeExtractedData>(
 const resumeSchema = new Schema<IResume>(
   {
     userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
       index: true,
     },

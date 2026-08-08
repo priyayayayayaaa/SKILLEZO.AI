@@ -34,12 +34,11 @@ Our mission is to empower students and job seekers with AI-driven career guidanc
 
 ## Backend
 
-- Node.js
-- Express.js
+- Better Auth Framework & MongoDB Adapter
+- Express.js & Node.js
 - TypeScript
 - MongoDB Atlas & Mongoose ODM
 - Zod (Schema & Environment Validation)
-- JWT & bcryptjs Authentication Architecture
 
 *(For detailed backend architecture and phase progress, see [server/README.md](file:///x:/projects/next.js/SKILLEZO.AI/server/README.md))*
 
@@ -52,8 +51,9 @@ Our mission is to empower students and job seekers with AI-driven career guidanc
 
 ## Authentication
 
-- JWT (JSON Web Token)
-- OAuth (Google, LinkedIn)
+- Better Auth Framework (Option A Identity Architecture)
+- Better Auth MongoDB Adapter
+- OAuth (Google, GitHub, LinkedIn - Planned)
 
 ## Version Control & Deployment
 

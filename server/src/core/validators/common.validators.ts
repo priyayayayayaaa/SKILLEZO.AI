@@ -8,6 +8,11 @@ export const objectIdSchema = z.string().refine(
   }
 );
 
+export const userIdSchema = z
+  .string()
+  .trim()
+  .min(1, "User ID is required");
+
 export const paginationQuerySchema = z.object({
   page: z
     .string()

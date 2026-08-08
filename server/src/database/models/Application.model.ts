@@ -4,14 +4,14 @@ import { ApplicationStatus } from "@/core/constants/enums";
 export interface IApplicationStatusHistory {
   status: ApplicationStatus;
   changedAt: Date;
-  changedBy?: Types.ObjectId | null;
+  changedBy?: string | null;
   reason?: string | null;
 }
 
 export interface IApplication extends Document {
   _id: Types.ObjectId;
   jobId: Types.ObjectId;
-  userId: Types.ObjectId;
+  userId: string;
   resumeId?: Types.ObjectId | null;
   status: ApplicationStatus;
   statusHistory: IApplicationStatusHistory[];
@@ -29,8 +29,7 @@ const statusHistorySchema = new Schema<IApplicationStatusHistory>(
     },
     changedAt: { type: Date, default: Date.now, required: true },
     changedBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       default: null,
     },
     reason: { type: String, default: null, trim: true },
@@ -47,8 +46,7 @@ const applicationSchema = new Schema<IApplication>(
       index: true,
     },
     userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
       index: true,
     },

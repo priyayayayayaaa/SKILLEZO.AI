@@ -49,7 +49,7 @@ export interface ICareerPlanGapsData {
 
 export interface ICareerPlan extends Document {
   _id: Types.ObjectId;
-  userId: Types.ObjectId;
+  userId: string;
   roleId: Types.ObjectId;
   sourceResumeId?: Types.ObjectId | null;
   readinessScore: number;
@@ -146,8 +146,7 @@ const gapsDataSchema = new Schema<ICareerPlanGapsData>(
 const careerPlanSchema = new Schema<ICareerPlan>(
   {
     userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
       index: true,
     },

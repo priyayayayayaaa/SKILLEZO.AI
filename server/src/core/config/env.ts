@@ -11,6 +11,8 @@ const envSchema = z.object({
   JWT_ACCESS_EXPIRES_IN: z.string().default("15m"),
   JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
   CLIENT_URL: z.string().url().default("http://localhost:3000"),
+  BETTER_AUTH_SECRET: z.string().min(1, "BETTER_AUTH_SECRET is required").default("development_secret_key_change_in_production_32chars"),
+  BETTER_AUTH_URL: z.string().url().default("http://localhost:5000"),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
 });
 

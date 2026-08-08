@@ -18,7 +18,7 @@ export interface ICompany extends Document {
   location?: ICompanyLocation | null;
   companySize?: CompanySize | null;
   verificationStatus: CompanyVerificationStatus;
-  createdBy: Types.ObjectId;
+  createdBy: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -86,8 +86,7 @@ const companySchema = new Schema<ICompany>(
       index: true,
     },
     createdBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
   },

@@ -29,7 +29,7 @@ export interface IJob extends Document {
   _id: Types.ObjectId;
   companyId: Types.ObjectId;
   roleId: Types.ObjectId;
-  createdBy: Types.ObjectId;
+  createdBy: string;
   title: string;
   description: string;
   employmentType: JobEmploymentType;
@@ -93,8 +93,7 @@ const jobSchema = new Schema<IJob>(
       index: true,
     },
     createdBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
       index: true,
     },
