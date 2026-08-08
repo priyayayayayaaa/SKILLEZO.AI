@@ -18,6 +18,7 @@ import {
   Compass,
   UserCheck,
   Briefcase,
+  Brain,
   LucideIcon,
 } from 'lucide-react';
 import BrandLogo from '@/components/auth/BrandLogo';
@@ -60,104 +61,62 @@ export const sidebarNavigation: NavEntry[] = [
     icon: LayoutDashboard,
   },
   {
-    type: 'group',
-    id: 'student-portal-hub',
+    type: 'item',
     label: 'Student Portal Hub',
+    href: '/dashboard/student-portal',
     icon: GraduationCap,
-    badge: 'Core',
-    children: [
-      {
-        label: 'Portal Overview',
-        href: '/dashboard/student-portal',
-        icon: GraduationCap,
-      },
-      {
-        label: 'Smart Job Center',
-        href: '/dashboard/job-center',
-        icon: Briefcase,
-        badge: 'Jobs',
-      },
-      {
-        label: 'Career Profile',
-        href: '/dashboard/profile',
-        icon: UserCheck,
-      },
-      {
-        label: 'AI Resume Intelligence',
-        href: '/dashboard/resume-intelligence',
-        icon: FileText,
-        badge: 'Module 20',
-      },
-      {
-        label: 'Skill Gap Analysis',
-        href: '/dashboard/skill-gap-analysis',
-        icon: Target,
-        badge: 'Module 21',
-      },
-      {
-        label: 'Employability Index',
-        href: '/dashboard/employability-index',
-        icon: BarChart3,
-        badge: 'Module 22',
-      },
-      {
-        label: 'Career GPS Roadmap',
-        href: '/dashboard/career-gps',
-        icon: Compass,
-        badge: 'Module 23',
-      },
-    ],
+    badge: 'CORE',
   },
   {
-    type: 'group',
-    id: 'career-intelligence',
-    label: 'Career Intelligence',
+    type: 'item',
+    label: 'Smart Job Center',
+    href: '/dashboard/job-center',
+    icon: Briefcase,
+    badge: 'JOBS',
+  },
+  {
+    type: 'item',
+    label: 'Career Profile',
+    href: '/dashboard/profile',
+    icon: UserCheck,
+  },
+  {
+    type: 'item',
+    label: 'AI Resume Intelligence',
+    href: '/dashboard/resume-intelligence',
+    icon: FileText,
+  },
+  {
+    type: 'item',
+    label: 'Skill Gap Analysis',
+    href: '/dashboard/skill-gap-analysis',
+    icon: Target,
+  },
+  {
+    type: 'item',
+    label: 'Employability Score',
+    href: '/dashboard/employability-index',
+    icon: BarChart3,
+  },
+  {
+    type: 'item',
+    label: 'Career GPS Roadmap',
+    href: '/dashboard/career-gps',
     icon: Compass,
-    badge: 'AI System',
-    children: [
-      {
-        label: 'Career Profile',
-        href: '/dashboard/profile',
-        icon: UserCheck,
-      },
-      {
-        label: 'AI Resume Intelligence',
-        href: '/dashboard/resume-intelligence',
-        icon: FileText,
-        badge: 'Module 20',
-      },
-      {
-        label: 'Skill Gap Analysis',
-        href: '/dashboard/skill-gap-analysis',
-        icon: Target,
-        badge: 'Module 21',
-      },
-      {
-        label: 'Employability Index',
-        href: '/dashboard/employability-index',
-        icon: BarChart3,
-        badge: 'Module 22',
-      },
-      {
-        label: 'Career GPS Roadmap',
-        href: '/dashboard/career-gps',
-        icon: Compass,
-        badge: 'Module 23',
-      },
-      {
-        label: 'Smart Job Center',
-        href: '/dashboard/job-center',
-        icon: Briefcase,
-        badge: 'Module 28',
-      },
-    ],
+  },
+  {
+    type: 'item',
+    label: 'Career Intelligence',
+    href: '/dashboard/student-portal',
+    icon: Brain,
+    badge: 'AI SYSTEM',
   },
   {
     type: 'item',
     label: 'Skill Verification',
     href: '/dashboard/skill-verification',
     icon: Award,
-    badge: 'Verified',
+    badge: 'VERIFIED',
   },
 ];
 
@@ -183,7 +142,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
         const isChildActive = entry.children.some(
           (child) => pathname === child.href || pathname.startsWith(child.href)
         );
-        initial[entry.id] = isChildActive || true; // Expand groups by default
+        initial[entry.id] = isChildActive || true;
       }
     });
     return initial;
@@ -284,7 +243,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
           const groupEntry = entry as NavGroupItem;
           const isGroupExpanded = !!openGroups[groupEntry.id];
           const isAnyChildActive = groupEntry.children.some(
-            (child) => pathname === child.href || (child.href !== '/dashboard/student-portal' && pathname.startsWith(child.href))
+            (child) => pathname === child.href || pathname.startsWith(child.href)
           );
           const GroupIcon = groupEntry.icon;
 
@@ -342,7 +301,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                     >
                       {groupEntry.children.map((child) => {
                         const isChildActive =
-                          pathname === child.href || (child.href !== '/dashboard/student-portal' && pathname.startsWith(child.href));
+                          pathname === child.href || pathname.startsWith(child.href);
                         const ChildIcon = child.icon;
 
                         return (
@@ -386,7 +345,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
             <Zap className="w-3.5 h-3.5" />
           </div>
           <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">Career & Job Portal</h4>
-          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Modules 20–28 Connected</p>
+          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Modules 20–28 Active</p>
         </div>
       )}
     </aside>
